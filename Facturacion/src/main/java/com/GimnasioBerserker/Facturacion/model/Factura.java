@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
@@ -30,11 +32,11 @@ public class Factura {
     private String rut;
 
     @NotNull(message = "El total es obligatorio ")
-    @Min(value = 1 , message = "El total debe ser mayor a 0")
+    @Min(value = 20000 , message = "El total debe ser mayor a 0")
     private Double valor;
 
     @NotNull(message = "La fecha es obligatoria ")
-    private LocalDate fecha_facturacion;
+    private LocalDateTime fecha_facturacion;
 
     @Enumerated(EnumType.STRING)
     private TipoMembresia tipoMembresia;

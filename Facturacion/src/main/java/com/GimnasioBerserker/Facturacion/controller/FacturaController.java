@@ -1,7 +1,7 @@
 package com.GimnasioBerserker.Facturacion.controller;
 
 import com.GimnasioBerserker.Facturacion.model.Factura;
-import com.GimnasioBerserker.Facturacion.repository.FacturaRepository;
+
 import com.GimnasioBerserker.Facturacion.service.FacturaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/factura")
+@RequestMapping("/facturas")
 public class FacturaController {
 
     @Autowired
