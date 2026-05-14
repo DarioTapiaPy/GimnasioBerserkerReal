@@ -5,6 +5,7 @@ import com.GimnasioBerserker.Facturacion.repository.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class FacturaService {
             FacturaExistente.setCliente(factura.getCliente());
             FacturaExistente.setRut(factura.getRut());
             FacturaExistente.setTipoMembresia(factura.getTipoMembresia());
-            FacturaExistente.setFecha_facturacion(factura.getFecha_facturacion());
+            FacturaExistente.setFecha_facturacion(LocalDateTime.now());
             FacturaExistente.setValor(factura.getValor());
 
             return facturaRepository.save(FacturaExistente);
