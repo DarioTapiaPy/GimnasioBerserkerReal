@@ -21,15 +21,8 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre del cliente es obligatorio ")
-    private String cliente;
-
-    @NotBlank(message = "El RUT es obligatorio ")
-    @Pattern(
-            regexp = "^[0-9]{7,8}-[0-9kK]{1}$",
-            message = "Formato de Rut invalido"
-    )
-    private String rut;
+   @NotNull(message = "El id del socio es obligatorio ")
+   private Long idSocio;
 
     @NotNull(message = "El total es obligatorio ")
     @Min(value = 20000 , message = "El total debe ser mayor a 0")
@@ -38,7 +31,6 @@ public class Factura {
     @NotNull(message = "La fecha es obligatoria ")
     private LocalDateTime fecha_facturacion;
 
-    @Enumerated(EnumType.STRING)
-    private TipoMembresia tipoMembresia;
+
 
 }
