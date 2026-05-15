@@ -29,9 +29,7 @@ public class FacturaService {
     public Factura actualizarFactura(long id, Factura factura ){
         Factura FacturaExistente = facturaRepository.findById(id).orElse(null);
         if(FacturaExistente != null){
-            FacturaExistente.setCliente(factura.getCliente());
-            FacturaExistente.setRut(factura.getRut());
-            FacturaExistente.setTipoMembresia(factura.getTipoMembresia());
+            FacturaExistente.setIdSocio(factura.getIdSocio());
             FacturaExistente.setFecha_facturacion(LocalDateTime.now());
             FacturaExistente.setValor(factura.getValor());
 

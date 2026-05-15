@@ -19,10 +19,12 @@ public class FacturaController {
     public List<Factura> listarFacturas(){
         return facturaService.ListarFacturas();
     }
+
      @GetMapping("/{id}")
     public Factura buscarFacturaPorId(@PathVariable Long id){
         return facturaService.findById(id);
      }
+
      @PostMapping
      public Factura guardarFactura(@Valid @RequestBody Factura factura){
         return facturaService.guardarFactura(factura);
