@@ -26,11 +26,8 @@ public class Socio {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 20)
-    private String telefono;
-
-    @Column(name = "estado_membresia", nullable = false, length = 20)
-    private String estadoMembresia;
+    @Column(nullable = false)
+    private boolean estadoMembresia = true;
 
     @Column(name = "plan_id", nullable = false)
     private Long planId;

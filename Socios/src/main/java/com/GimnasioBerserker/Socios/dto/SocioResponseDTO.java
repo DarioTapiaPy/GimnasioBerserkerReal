@@ -11,7 +11,6 @@ public class SocioResponseDTO {
     private String rut;
     private String nombre;
     private String email;
-    private String telefono;
     private String estadoMembresia;
     private Long planId;
 }

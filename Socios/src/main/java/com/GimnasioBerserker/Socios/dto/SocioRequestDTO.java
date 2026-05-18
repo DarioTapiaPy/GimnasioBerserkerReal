@@ -22,15 +22,8 @@ public class SocioRequestDTO {
     @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank(message = "El teléfono es obligatorio")
-    private String telefono;
-
-    @NotBlank(message = "El estado de membresía es obligatorio")
-    @Pattern(
-            regexp = "^(ACTIVO|INACTIVO)$",
-            message = "estadoMembresia debe ser ACTIVO o INACTIVO"
-    )
-    private String estadoMembresia;
+    @NotNull(message = "El estado de la membresía es obligatorio (true para activo, false para inactivo)")
+    private Boolean estadoMembresia;
 
     @NotNull(message = "El planId es obligatorio")
     private Long planId;
