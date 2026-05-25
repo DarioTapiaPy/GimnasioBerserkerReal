@@ -1,5 +1,7 @@
 package com.GimnasioBerserker.Facturacion.service;
 
+import com.GimnasioBerserker.Facturacion.client.SocioClient;
+import com.GimnasioBerserker.Facturacion.dto.SocioDTO;
 import com.GimnasioBerserker.Facturacion.model.Factura;
 import com.GimnasioBerserker.Facturacion.repository.FacturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +43,20 @@ public class FacturaService {
     }
     public void  eliminarFactura(long id){
         facturaRepository.deleteById(id);
+    }
+
+
+    @Autowired
+    SocioClient socioClient;
+
+    public SocioDTO obtenerSocioDeFactura(Long facturaId) {
+
+        Factura factura = facturaRepository.findById(facturaId).orElse(null);
+
+        if (factura == null) {
+            return null;
+        }
+
+        return socioClient.obtenerSocioPorId(factura.getIdSocio());
     }
 }
