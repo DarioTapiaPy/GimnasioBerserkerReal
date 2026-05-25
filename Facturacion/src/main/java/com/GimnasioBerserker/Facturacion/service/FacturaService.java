@@ -1,6 +1,7 @@
 package com.GimnasioBerserker.Facturacion.service;
 
 import com.GimnasioBerserker.Facturacion.client.SocioClient;
+import com.GimnasioBerserker.Facturacion.dto.FacturaSocioDTO;
 import com.GimnasioBerserker.Facturacion.dto.SocioDTO;
 import com.GimnasioBerserker.Facturacion.model.Factura;
 import com.GimnasioBerserker.Facturacion.repository.FacturaRepository;
@@ -58,5 +59,25 @@ public class FacturaService {
         }
 
         return socioClient.obtenerSocioPorId(factura.getIdSocio());
+    }
+
+    public FacturaSocioDTO obtenerFacturaConSocio (long id ){
+        Factura factura = facturaRepository.findById(id).orElse(null);
+        if (factura == null) {
+            return null;
+        }
+        SocioDTO socio = socioClient.obtenerSocioPorId(factura.getIdSocio());
+        FacturaSocioDTO dto = new FacturaSocioDTO();
+        dto.setId(factura.getId());
+        dto.setIdSocio(factura.getIdSocio());
+        dto.setValor(factura.getValor());
+        dto.setFecha_facturacion(factura.getFecha_facturacion());
+
+        dto.setRut(socio.getRut());
+        dto.setNombre(socio.getNombre());
+        dto.setEmail(socio.getEmail());
+        dto.setEstadoMembresia(socio.isEstadoMembresia());
+        dto.setPlanId(socio.getPlanId());
+        return dto;
     }
 }

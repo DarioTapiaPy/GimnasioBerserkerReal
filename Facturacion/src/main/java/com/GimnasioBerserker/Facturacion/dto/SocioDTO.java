@@ -9,5 +9,7 @@ public class SocioDTO {
     private String nombre;
     private String rut;
     private String email;
+    private boolean estadoMembresia;
+    private long planId;
 }
 
