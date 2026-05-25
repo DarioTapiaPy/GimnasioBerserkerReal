@@ -3,10 +3,12 @@ package com.GimnasioBerserker.Inventario.Service;
 import com.GimnasioBerserker.Inventario.Model.Inventario;
 import com.GimnasioBerserker.Inventario.Repository.InventarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class InventarioServiceImpl implements InventarioService {
 
     @Autowired
