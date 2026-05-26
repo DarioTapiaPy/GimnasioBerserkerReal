@@ -1,5 +1,6 @@
 package com.GimnasioBerserker.Comercial.controller;
 
+import com.GimnasioBerserker.Comercial.dto.VentaRequestDTO;
 import com.GimnasioBerserker.Comercial.model.Venta;
 import com.GimnasioBerserker.Comercial.service.VentaService;
 import jakarta.validation.Valid;
@@ -25,14 +26,13 @@ public class VentaController {
         return ventaService.findById(id);
     }
 
-    @PostMapping
-    public Venta guardarVenta(@Valid @RequestBody Venta venta) {
-        return ventaService.guardarVenta(venta);
+    @PostMapping("/producto")
+    public Venta venderProducto(@Valid @RequestBody VentaRequestDTO request) {
+        return ventaService.crearVentaProducto(request);
     }
 
     @PutMapping("/{id}")
-    public Venta actualizarVenta(@PathVariable Long id,
-                                 @Valid @RequestBody Venta venta) {
+    public Venta actualizarVenta(@PathVariable Long id, @Valid @RequestBody Venta venta) {
         return ventaService.actualizarVenta(id, venta);
     }
 
