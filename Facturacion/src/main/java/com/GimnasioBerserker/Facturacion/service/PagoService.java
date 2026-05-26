@@ -2,7 +2,6 @@ package com.GimnasioBerserker.Facturacion.service;
 
 import com.GimnasioBerserker.Facturacion.dto.PagoFacturaDTO;
 import com.GimnasioBerserker.Facturacion.model.Pago;
-import com.GimnasioBerserker.Facturacion.dto.PagoDto;
 import com.GimnasioBerserker.Facturacion.model.Factura;
 
 import com.GimnasioBerserker.Facturacion.repository.FacturaRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PagoService {
