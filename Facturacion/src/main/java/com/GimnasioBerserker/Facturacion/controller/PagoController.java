@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pagos")
+@RequestMapping("/api/facturacion/pagos")
 public class PagoController {
     @Autowired
     private PagoService pagoService;
