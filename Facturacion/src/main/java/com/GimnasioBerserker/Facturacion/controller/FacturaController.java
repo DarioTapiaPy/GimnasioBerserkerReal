@@ -1,6 +1,10 @@
 package com.GimnasioBerserker.Facturacion.controller;
 
 import com.GimnasioBerserker.Facturacion.dto.FacturaSocioDTO;
+ facturacion/nico
+import com.GimnasioBerserker.Facturacion.dto.SocioDTO;
+
+ main
 import com.GimnasioBerserker.Facturacion.model.Factura;
 
 import com.GimnasioBerserker.Facturacion.service.FacturaService;
@@ -43,7 +47,11 @@ public class FacturaController {
 
 
     @GetMapping("/{id}/socios")
+facturacion/nico
+    public FacturaSocioDTO obtenerFacturaConSocio(@PathVariable Long id){
+
     public FacturaSocioDTO obtenerSocioConFactura(@PathVariable Long id){
+main
         return facturaService.obtenerFacturaConSocio(id);
     }
 

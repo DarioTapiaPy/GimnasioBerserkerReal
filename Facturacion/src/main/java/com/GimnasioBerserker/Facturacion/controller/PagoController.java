@@ -1,5 +1,6 @@
 package com.GimnasioBerserker.Facturacion.controller;
 
+import com.GimnasioBerserker.Facturacion.dto.PagoFacturaDTO;
 import com.GimnasioBerserker.Facturacion.model.Pago;
 import com.GimnasioBerserker.Facturacion.service.PagoService;
 import jakarta.validation.Valid;
@@ -33,6 +34,11 @@ public class PagoController {
     @DeleteMapping("/{id}")
     public void eliminarPago(@PathVariable Long id){
         pagoService.eliminarPago(id);
+    }
+
+    @GetMapping("/{id}/factura")
+    public PagoFacturaDTO obtenerPagoConFactura(@PathVariable Long id){
+        return pagoService.obtenerPagoConFactura(id);
     }
 
 }
