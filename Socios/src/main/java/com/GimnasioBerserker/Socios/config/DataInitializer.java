@@ -24,7 +24,7 @@ public class DataInitializer implements CommandLineRunner {
             log.info(">>> Socios ya cargados. Se omite inicialización.");
         }else{
         log.info(">>> Cargando socios iniciales...");
-        socioRepository.save(new Socio(null, "22665456-9", "Roberto Medina", "rob.medina@gmail.com", false, 1L));
+        socioRepository.save(new Socio(null, "22665456-9", "Roberto Medina", "rob.medina@gmail.com", true, 1L));
         socioRepository.save(new Socio(null, "21802504-8", "Julia Gonzalez", "jul.gonzalez@gmail.com", true, 3L));
         socioRepository.save(new Socio(null, "20503580-k", "David Ibañez ", "dav.ibanez@gmail.com", true, 2L));
         log.info(">>> 3 socios cargados OK.");}

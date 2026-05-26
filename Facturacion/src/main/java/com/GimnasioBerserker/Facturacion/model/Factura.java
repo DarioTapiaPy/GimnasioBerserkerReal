@@ -21,7 +21,7 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   @NotNull(message = "El id del socio es obligatorio ")
+    @NotNull(message = "El id del socio es obligatorio ")
    private Long idSocio;
 
     @NotNull(message = "El total es obligatorio ")
