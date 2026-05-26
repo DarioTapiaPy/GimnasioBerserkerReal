@@ -2,8 +2,7 @@ package com.GimnasioBerserker.Facturacion.controller;
 
 import com.GimnasioBerserker.Facturacion.dto.FacturaSocioDTO;
 
-
-
+import com.GimnasioBerserker.Facturacion.dto.SocioDTO;
 
 import com.GimnasioBerserker.Facturacion.model.Factura;
 
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/facturas")
+@RequestMapping("/api/facturacion/facturas")
 public class FacturaController {
 
     @Autowired
@@ -25,33 +24,31 @@ public class FacturaController {
         return facturaService.ListarFacturas();
     }
 
-     @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public Factura buscarFacturaPorId(@PathVariable Long id){
         return facturaService.findById(id);
-     }
+    }
 
-     @PostMapping
-     public Factura guardarFactura(@Valid @RequestBody Factura factura){
+    @PostMapping
+    public Factura guardarFactura(@Valid @RequestBody Factura factura){
         return facturaService.guardarFactura(factura);
-     }
+    }
 
     @PutMapping("/{id}")
-    public Factura actualizarFactura(@PathVariable Long id,
-                                     @Valid @RequestBody Factura factura) {
+    public Factura actualizarFactura(@PathVariable Long id, @Valid @RequestBody Factura factura) {
         return facturaService.actualizarFactura(id, factura);
     }
+
     @DeleteMapping("/{id}")
     public void eliminarFactura(@PathVariable Long id) {
         facturaService.eliminarFactura(id);
     }
 
-
-    @GetMapping("/{id}/socio")
-    public FacturaSocioDTO obtenerFacturaConSocio(@PathVariable Long id) {
+    // Este es el endpoint especial que usa Feign o comunicación interna
+    @GetMapping("/{id}/socios")
+    public FacturaSocioDTO obtenerFacturaConSocio(@PathVariable Long id){
         return facturaService.obtenerFacturaConSocio(id);
     }
-
-
 }
 
 
