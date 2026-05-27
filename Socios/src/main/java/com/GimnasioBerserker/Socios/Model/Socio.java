@@ -31,4 +31,7 @@ public class Socio {
 
     @Column(name = "plan_id", nullable = false)
     private Long planId;
+
+    @Column(name = "rutina_id")
+    private Long rutinaId;
 }

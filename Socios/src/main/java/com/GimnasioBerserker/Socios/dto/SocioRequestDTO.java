@@ -27,4 +27,7 @@ public class SocioRequestDTO {
 
     @NotNull(message = "El planId es obligatorio")
     private Long planId;
+
+    @NotNull(message = "La rutinaID es obligatoria")
+    private Long rutinaId;
 }

@@ -2,6 +2,7 @@ package com.GimnasioBerserker.Socios.controller;
 
 
 import com.GimnasioBerserker.Socios.Model.Socio;
+import com.GimnasioBerserker.Socios.dto.SocioConRutinaDTO;
 import com.GimnasioBerserker.Socios.service.SocioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,4 +54,13 @@ public class SocioController {
         socioService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/rutina")
+    public ResponseEntity<SocioConRutinaDTO> obtenerConRutina(@PathVariable Long id) {
+        return socioService.obtenerSocioConRutina(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }
