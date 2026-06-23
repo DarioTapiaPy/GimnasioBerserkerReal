@@ -1,0 +1,22 @@
+server:
+  port: 8084 # Puerto dedicado para Rutina
+
+spring:
+  application:
+    name: rutina-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/rutinas_db # Cambia esto si usas otro nombre de BD
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Para que cree/actualice las tablas autom�ticamente
+    show-sql: true
+
+# Configuraci�n para que Swagger se vea bonito
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

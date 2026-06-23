@@ -1,30 +1,32 @@
 package com.GimnasioBerserker.Rutina.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Data // Si no usas Lombok, genera los Getters y Setters a mano
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "rutinas")
+@Schema(description = "Entidad que representa una rutina de entrenamiento asignada a un socio")
 public class Rutina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "ID único de la rutina", example = "1")
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false)
+    @Schema(description = "Nombre descriptivo de la rutina", example = "Torso/Pierna")
     private String nombre;
 
-    private String objetivo;
+    @Column(nullable = false)
+    @Schema(description = "Nivel de dificultad", example = "Intermedio")
+    private String nivel;
 
-    private int duracionSemanas;
+    @Column(nullable = false)
+    @Schema(description = "Frecuencia semanal en días", example = "4")
+    private Integer diasPorSemana;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Ejercicio> ejercicios;
+    @Schema(description = "ID del socio al que pertenece la rutina", example = "105")
+    private Long socioId;
 }
