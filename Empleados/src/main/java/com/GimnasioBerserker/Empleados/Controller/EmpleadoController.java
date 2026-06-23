@@ -3,6 +3,10 @@ package com.GimnasioBerserker.Empleados.Controller;
 import com.GimnasioBerserker.Empleados.Model.Empleado;
 import com.GimnasioBerserker.Empleados.Service.EmpleadoService;
 import com.GimnasioBerserker.Empleados.Dto.ErrorResponse; // Tu DTO
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController     //convierte los objetos en formato json leible para el navegador
-@RequestMapping("/api/empleados")   //ruta
+@RequestMapping("/api/empleados")//ruta
+
+@Tag(name = "Empleado Controller", description = "Operaciones de gestion de empleados")
 
 public class EmpleadoController {
 
@@ -24,6 +30,11 @@ public class EmpleadoController {
     }
 
     @GetMapping("/{idEmp}") //lista los empleados buscador por id
+    @Operation(summary = "Obtener un empleado por ID", description = "Empleado encontrado exitosamente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Empleado encontrado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Empleado no encontrado")
+    })
     public ResponseEntity<?> obtenerPorId(@PathVariable Long idEmp) {
         Optional<Empleado> empleadoOpt = service.buscarPorId(idEmp);
         if (empleadoOpt.isPresent()) {
@@ -35,6 +46,11 @@ public class EmpleadoController {
     }
 
     @PostMapping
+    @Operation(summary = "Crear un nuevo empleado", description = "Registrar un nuevo empleado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Empleado creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada invalidos")
+    })
     public ResponseEntity<?> crear(@RequestBody Empleado empleado) {
         try {
             Empleado guardado = service.guardar(empleado);
@@ -46,6 +62,12 @@ public class EmpleadoController {
     }
 
     @PutMapping("/{idEmp}")
+    @Operation(summary = "Actualizar un empleado existente",description = "Modificar los datos de un empleado buscando por ID ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Empleado actualizado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "No se encontro el ID para el empleado solicitado")
+
+    })
     public ResponseEntity<?> actualizar(@PathVariable Long idEmp, @RequestBody Empleado detalles) {
         Optional<Empleado> empleadoOpt = service.buscarPorId(idEmp);
 
@@ -67,6 +89,12 @@ public class EmpleadoController {
 
 
     @DeleteMapping("/{idEmp}") //<?> hace que el metodo sea flexible
+    @Operation(summary = "Eliminar un empleado", description = "Elimina un empleado solicitando su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Empleado encontrado exitosamente"),
+            @ApiResponse(responseCode = "403", description = "Prohibido eliminar a un Jefe"),
+            @ApiResponse(responseCode = "404", description = "No se encontro el empleado ")
+    })
     public ResponseEntity<?> eliminar(@PathVariable Long idEmp) {
         Optional<Empleado> empleadoOpt = service.buscarPorId(idEmp);
         if (empleadoOpt.isPresent()) {
