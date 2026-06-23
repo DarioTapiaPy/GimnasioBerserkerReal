@@ -14,7 +14,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
-@RequestMapping("/productos")
+@RequestMapping("/api/comercial/productos")
 public class ProductoController {
     @Autowired
     private ProductoService productoService;
