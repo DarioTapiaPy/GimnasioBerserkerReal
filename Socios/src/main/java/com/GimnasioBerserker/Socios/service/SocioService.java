@@ -1,6 +1,9 @@
 package com.GimnasioBerserker.Socios.service;
 
 import com.GimnasioBerserker.Socios.Model.Socio;
+import com.GimnasioBerserker.Socios.client.RutinaClient;
+import com.GimnasioBerserker.Socios.dto.RutinaResponseDTO;
+import com.GimnasioBerserker.Socios.dto.SocioConRutinaDTO;
 import com.GimnasioBerserker.Socios.repository.SocioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import java.util.Optional;
 
 public class SocioService {
     private final SocioRepository socioRepository;
+    private final RutinaClient rutinaClient;
 
     public SocioRepository getSocioRepository() {
         return socioRepository;
@@ -41,4 +45,22 @@ public class SocioService {
 
     public void eliminar(Long id){ socioRepository.deleteById(id);}
 
+    public Optional<SocioConRutinaDTO> obtenerSocioConRutina(Long socioId) {
+        return socioRepository.findById(socioId).map(socio -> {
+            RutinaResponseDTO rutina = null;
+            if (socio.getRutinaId() != null) {
+                rutina = rutinaClient.obtenerPorId(socio.getRutinaId());
+            }
+            String estado = socio.isEstadoMembresia() ? "Activa" : "Inactiva";
+            return new SocioConRutinaDTO(
+                    socio.getId(),
+                    socio.getRut(),
+                    socio.getNombre(),
+                    socio.getEmail(),
+                    estado,
+                    socio.getPlanId(),
+                    rutina
+            );
+        });
+    }
 }

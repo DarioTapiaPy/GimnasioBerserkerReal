@@ -35,7 +35,11 @@ public class Venta {
     private Integer precioUnitario;
 
     @NotNull(message = "El total es obligatorio")
+
+    @Min(value = 1 , message = "El total debe ser mayor a 0 ")
+
     @Min(value = 1, message = "El total debe ser mayor a 0")
+
     private Integer total;
 
     private LocalDateTime fechaVenta;
