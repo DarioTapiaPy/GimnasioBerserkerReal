@@ -1,84 +1,62 @@
 package com.GimnasioBerserker.Comercial.controller;
 
+
+
 import com.GimnasioBerserker.Comercial.model.Producto;
 import com.GimnasioBerserker.Comercial.service.ProductoService;
 import jakarta.validation.Valid;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/api/comercial/productos")
 public class ProductoController {
-
-    private final ProductoService productoService;
-
-    public ProductoController(ProductoService productoService) {
-        this.productoService = productoService;
-    }
+    @Autowired
+    private ProductoService productoService;
 
     @GetMapping
-    public CollectionModel<EntityModel<Producto>> listarProductos() {
-
-        List<EntityModel<Producto>> productos = productoService.listarProductos()
-                .stream()
-                .map(producto -> EntityModel.of(producto,
-                        linkTo(methodOn(ProductoController.class).buscarPorId(producto.getId())).withSelfRel(),
-                        linkTo(methodOn(ProductoController.class).listarProductos()).withRel("todos-los-productos")
-                ))
-                .toList();
-
-        return CollectionModel.of(productos,
-                linkTo(methodOn(ProductoController.class).listarProductos()).withSelfRel()
-        );
+    public List<Producto> listarProductos(){
+        return productoService.listarProductos();
     }
 
     @GetMapping("/{id}")
-    public EntityModel<Producto> buscarPorId(@PathVariable Long id) {
-
-        Producto producto = productoService.findById(id);
-
-        return EntityModel.of(producto,
-                linkTo(methodOn(ProductoController.class).buscarPorId(id)).withSelfRel(),
-                linkTo(methodOn(ProductoController.class).listarProductos()).withRel("todos-los-productos"),
-                linkTo(methodOn(ProductoController.class).guardarProducto(producto)).withRel("crear-producto"),
-                linkTo(methodOn(ProductoController.class).actualizarProducto(producto, id)).withRel("actualizar-producto")
-        );
+    public Producto buscarPorId(@PathVariable Long id){
+        return productoService.findById(id);
     }
-
     @PostMapping
-    public EntityModel<Producto> guardarProducto(@Valid @RequestBody Producto producto) {
-
-        Producto productoGuardado = productoService.guardarproducto(producto);
-
-        return EntityModel.of(productoGuardado,
-                linkTo(methodOn(ProductoController.class).buscarPorId(productoGuardado.getId())).withSelfRel(),
-                linkTo(methodOn(ProductoController.class).listarProductos()).withRel("todos-los-productos")
-        );
+    public Producto guardarProducto(@Valid @RequestBody Producto producto){
+        return productoService.guardarproducto(producto);
     }
 
     @PutMapping("/{id}")
-    public EntityModel<Producto> actualizarProducto(@Valid @RequestBody Producto producto, @PathVariable Long id) {
+    public  Producto actualizarProducto(@Valid @RequestBody Producto producto, @PathVariable Long id){
+        return productoService.actualizarproducto(id, producto);
 
-        Producto productoActualizado = productoService.actualizarproducto(id, producto);
-
-        return EntityModel.of(productoActualizado,
-                linkTo(methodOn(ProductoController.class).buscarPorId(id)).withSelfRel(),
-                linkTo(methodOn(ProductoController.class).listarProductos()).withRel("todos-los-productos")
-        );
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable Long id) {
+    public void eliminarProducto(@PathVariable Long id){
         productoService.eliminarProducto(id);
     }
 
     @GetMapping("/{id}/hateoas")
     public EntityModel<Producto> obtenerProductoHateoas(@PathVariable Long id) {
-        return buscarPorId(id);
+        Producto producto = productoService.findById(id);
+
+        EntityModel<Producto> recurso = EntityModel.of(producto);
+
+        recurso.add(linkTo(methodOn(ProductoController.class).obtenerProductoHateoas(id)).withSelfRel());
+        recurso.add(linkTo(methodOn(ProductoController.class).listarProductos()).withRel("listar-productos"));
+        recurso.add(linkTo(methodOn(ProductoController.class).buscarPorId(id)).withRel("buscar-producto"));
+        recurso.add(linkTo(ProductoController.class).slash(id).withRel("eliminar-producto"));
+
+        return recurso;
     }
+
+
 }

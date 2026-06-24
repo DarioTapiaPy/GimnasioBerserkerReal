@@ -1,84 +1,62 @@
 package com.GimnasioBerserker.Comercial.controller;
 
+
 import com.GimnasioBerserker.Comercial.dto.VentaRequestDTO;
+
 import com.GimnasioBerserker.Comercial.model.Venta;
 import com.GimnasioBerserker.Comercial.service.VentaService;
 import jakarta.validation.Valid;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/comercial/ventas")
 public class VentaController {
 
-    private final VentaService ventaService;
-
-    public VentaController(VentaService ventaService) {
-        this.ventaService = ventaService;
-    }
+    @Autowired
+    private VentaService ventaService;
 
     @GetMapping
-    public CollectionModel<EntityModel<Venta>> listarVentas() {
-
-        List<EntityModel<Venta>> ventas = ventaService.listarVentas()
-                .stream()
-                .map(venta -> EntityModel.of(venta,
-                        linkTo(methodOn(VentaController.class).buscarVentaPorId(venta.getId())).withSelfRel(),
-                        linkTo(methodOn(VentaController.class).listarVentas()).withRel("todas-las-ventas")
-                ))
-                .toList();
-
-        return CollectionModel.of(ventas,
-                linkTo(methodOn(VentaController.class).listarVentas()).withSelfRel()
-        );
+    public List<Venta> listarVentas() {
+        return ventaService.listarVentas();
     }
 
     @GetMapping("/{id}")
-    public EntityModel<Venta> buscarVentaPorId(@PathVariable Long id) {
-
-        Venta venta = ventaService.findById(id);
-
-        return EntityModel.of(venta,
-                linkTo(methodOn(VentaController.class).buscarVentaPorId(id)).withSelfRel(),
-                linkTo(methodOn(VentaController.class).listarVentas()).withRel("todas-las-ventas"),
-                linkTo(methodOn(VentaController.class).obtenerVentaHateoas(id)).withRel("venta-hateoas")
-        );
+    public Venta buscarVentaPorId(@PathVariable Long id) {
+        return ventaService.findById(id);
     }
 
     @PostMapping("/producto")
-    public EntityModel<Venta> venderProducto(@Valid @RequestBody VentaRequestDTO request) {
-
-        Venta ventaCreada = ventaService.crearVentaProducto(request);
-
-        return EntityModel.of(ventaCreada,
-                linkTo(methodOn(VentaController.class).buscarVentaPorId(ventaCreada.getId())).withSelfRel(),
-                linkTo(methodOn(VentaController.class).listarVentas()).withRel("todas-las-ventas")
-        );
+    public Venta venderProducto(@Valid @RequestBody VentaRequestDTO request) {
+        return ventaService.crearVentaProducto(request);
     }
 
     @PutMapping("/{id}")
-    public EntityModel<Venta> actualizarVenta(@PathVariable Long id, @Valid @RequestBody Venta venta) {
-
-        Venta ventaActualizada = ventaService.actualizarVenta(id, venta);
-
-        return EntityModel.of(ventaActualizada,
-                linkTo(methodOn(VentaController.class).buscarVentaPorId(id)).withSelfRel(),
-                linkTo(methodOn(VentaController.class).listarVentas()).withRel("todas-las-ventas")
-        );
+    public Venta actualizarVenta(@PathVariable Long id, @Valid @RequestBody Venta venta) {
+        return ventaService.actualizarVenta(id, venta);
     }
 
     @DeleteMapping("/{id}")
     public void eliminarVenta(@PathVariable Long id) {
         ventaService.eliminarVenta(id);
     }
-
     @GetMapping("/{id}/hateoas")
     public EntityModel<Venta> obtenerVentaHateoas(@PathVariable Long id) {
-        return buscarVentaPorId(id);
+        Venta venta = ventaService.findById(id);
+
+        EntityModel<Venta> recurso = EntityModel.of(venta);
+
+        recurso.add(linkTo(methodOn(VentaController.class).obtenerVentaHateoas(id)).withSelfRel());
+        recurso.add(linkTo(methodOn(VentaController.class).listarVentas()).withRel("listar-ventas"));
+        recurso.add(linkTo(methodOn(VentaController.class).buscarVentaPorId(id)).withRel("buscar-venta"));
+        recurso.add(linkTo(VentaController.class).slash(id).withRel("eliminar-venta"));
+
+        return recurso;
     }
 }

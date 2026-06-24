@@ -7,6 +7,34 @@ spring:
   cloud:
     gateway:
       routes:
+        # ── Rutas dedicadas para api-docs (DEBEN ir ANTES de las rutas generales) ──
+        # Sin estas rutas, el gateway reenviaría /api/socios/v3/api-docs
+        # a socios-service:8082/api/socios/v3/api-docs (404), en vez de
+        # a socios-service:8082/v3/api-docs (correcto).
+
+        - id: rutina-service-apidocs
+          uri: http://rutina-service:8086
+          predicates:
+            - Path=/api/rutinas/v3/api-docs
+          filters:
+            - RewritePath=/api/rutinas/v3/api-docs, /v3/api-docs
+
+        - id: socios-service-apidocs
+          uri: http://socios-service:8082
+          predicates:
+            - Path=/api/socios/v3/api-docs
+          filters:
+            - RewritePath=/api/socios/v3/api-docs, /v3/api-docs
+
+        - id: empleados-service-apidocs
+          uri: http://empleados-service:8081
+          predicates:
+            - Path=/api/empleados/v3/api-docs
+          filters:
+            - RewritePath=/api/empleados/v3/api-docs, /v3/api-docs
+
+        # ── Rutas generales de cada microservicio ──────────────────────────────
+
         # 1. RUTA DE RUTINAS
         - id: rutina-service
           uri: http://rutina-service:8086
