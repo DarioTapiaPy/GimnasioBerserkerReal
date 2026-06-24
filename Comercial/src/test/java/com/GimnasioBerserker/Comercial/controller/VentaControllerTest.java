@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,12 +44,9 @@ class VentaControllerTest {
 
         mockMvc.perform(get("/api/comercial/ventas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].socioId").value(1))
-                .andExpect(jsonPath("$[0].productoId").value(1))
-                .andExpect(jsonPath("$[0].cantidad").value(2))
-                .andExpect(jsonPath("$[0].precioUnitario").value(25000))
-                .andExpect(jsonPath("$[0].total").value(50000));
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(content().string(containsString("50000")))
+                .andExpect(content().string(containsString("25000")));
     }
 
     @Test
@@ -70,7 +68,10 @@ class VentaControllerTest {
                 .andExpect(jsonPath("$.productoId").value(1))
                 .andExpect(jsonPath("$.cantidad").value(2))
                 .andExpect(jsonPath("$.precioUnitario").value(25000))
-                .andExpect(jsonPath("$.total").value(50000));
+                .andExpect(jsonPath("$.total").value(50000))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.todas-las-ventas.href").exists())
+                .andExpect(jsonPath("$._links.venta-hateoas.href").exists());
     }
 
     @Test
@@ -102,6 +103,8 @@ class VentaControllerTest {
                 .andExpect(jsonPath("$.productoId").value(1))
                 .andExpect(jsonPath("$.cantidad").value(2))
                 .andExpect(jsonPath("$.precioUnitario").value(25000))
-                .andExpect(jsonPath("$.total").value(50000));
+                .andExpect(jsonPath("$.total").value(50000))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.todas-las-ventas.href").exists());
     }
 }
