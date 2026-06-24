@@ -26,3 +26,14 @@ spring:
 eureka:
   client:
     enabled: false
+
+
+# ── Swagger / OpenAPI ──────────────────────────────────────
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    # Esto es vital para que las rutas del Gateway funcionen
+    server-url: /api/comercial
+    disable-swagger-default-url: true
