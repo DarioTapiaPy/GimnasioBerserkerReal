@@ -15,22 +15,21 @@ import java.util.Locale;
 @Configuration
 public class DataFakerConfig {
 
-    /** Grupos musculares típicos de un gimnasio. */
     private static final List<String> GRUPOS_MUSCULARES = List.of(
             "Pecho", "Espalda", "Piernas", "Hombros",
             "Bíceps", "Tríceps", "Abdomen", "Glúteos"
     );
 
-    /** Objetivos de entrenamiento para rutinas. */
     private static final List<String> OBJETIVOS = List.of(
             "Fuerza", "Hipertrofia", "Resistencia",
             "Pérdida de grasa", "Tonificación", "Rehabilitación"
     );
 
-    /**
-     * Genera rutinas de entrenamiento de prueba usando DataFaker.
-     * Solo inserta si hay menos de 5 rutinas para evitar duplicados.
-     */
+    // Agregamos una lista de deportes/tipos para no depender del método roto de la librería
+    private static final List<String> DEPORTES = List.of(
+            "Fitness", "Culturismo", "Powerlifting", "Crossfit", "Calistenia", "Funcional"
+    );
+
     @Bean
     CommandLineRunner cargarRutinasFalsas(RutinaRepository rutinaRepository) {
         return args -> {
@@ -40,17 +39,22 @@ public class DataFakerConfig {
 
                 for (int i = 0; i < 5; i++) {
                     Rutina rutina = new Rutina();
-                    rutina.setNombre("Rutina " + faker.sports().sport() + " " + (i + 1));
+
+                    // SOLUCIÓN: Usamos faker para elegir un deporte de nuestra lista segura
+                    String deporteAleatorio = DEPORTES.get(faker.number().numberBetween(0, DEPORTES.size()));
+                    rutina.setNombre("Rutina de " + deporteAleatorio + " " + (i + 1));
+
                     rutina.setObjetivo(OBJETIVOS.get(faker.number().numberBetween(0, OBJETIVOS.size())));
                     rutina.setDuracionSemanas(faker.number().numberBetween(4, 16));
 
-                    // Cada rutina tiene entre 3 y 6 ejercicios
                     int cantEjercicios = faker.number().numberBetween(3, 7);
                     List<Ejercicio> ejercicios = new ArrayList<>();
 
                     for (int j = 0; j < cantEjercicios; j++) {
                         Ejercicio ejercicio = new Ejercicio();
-                        ejercicio.setNombre(faker.educator().course() + " Press");
+
+                        // Si educat() también te da rojo, cámbialo por otra cosa o un texto fijo
+                        ejercicio.setNombre("Ejercicio " + (j + 1) + " Press");
                         ejercicio.setSeries(faker.number().numberBetween(3, 6));
                         ejercicio.setRepeticiones(faker.number().numberBetween(8, 15));
                         ejercicio.setGrupoMuscular(

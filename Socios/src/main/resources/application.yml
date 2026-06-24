@@ -8,12 +8,13 @@ server:
 
 spring:
   application:
-    name: Socios
+    name: socios-service  # Homologado con tu docker-compose
 
   datasource:
-    url: jdbc:mysql://localhost:3306/socios_db?useSSL=false&serverTimezone=UTC
+    # CAMBIOS: localhost -> mysql y se agrega la creación automática si no existe
+    url: jdbc:mysql://mysql:3306/socios_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: ""
+    password: "123456"  # Clave real de tu Docker Compose
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -25,17 +26,23 @@ spring:
       hibernate:
         format_sql: true
 
+  # Configuración para que Flyway cree la BD si no existe antes de migrar
   flyway:
     enabled: true
+    url: jdbc:mysql://mysql:3306/socios_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    user: root
+    password: "123456"
     locations: classpath:db/migration
 
 eureka:
   client:
     enabled: false
 
+# ── Comunicación entre Microservicios ─────────────────────
 rutina:
   service:
-    url: http://localhost:8086
+    # CAMBIO CRÍTICO: Se cambia localhost por el nombre del servicio en Docker
+    url: http://rutina-service:8086
 
 # ── Swagger / OpenAPI ──────────────────────────────────────
 springdoc:
@@ -45,6 +52,7 @@ springdoc:
     path: /swagger-ui.html
     operations-sorter: alpha
     tags-sorter: alpha
+    disable-swagger-default-url: true
   info:
     title: "Socios API - Gimnasio Berserker"
     version: "1.0.0"

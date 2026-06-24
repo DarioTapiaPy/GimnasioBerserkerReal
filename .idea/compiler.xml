@@ -9,7 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
       </profile>
-      <profile name="Annotation profile for Inventario" enabled="true">
+      <profile name="Annotation profile for Socios" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -20,8 +20,8 @@
         <module name="Empleados" />
         <module name="Facturacion" />
         <module name="Comercial" />
-        <module name="Inventario" />
         <module name="Rutina" />
+        <module name="Inventario" />
       </profile>
     </annotationProcessing>
   </component>
