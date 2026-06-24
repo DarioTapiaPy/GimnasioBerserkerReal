@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,12 +43,10 @@ class ProductoControllerTest {
 
         mockMvc.perform(get("/api/comercial/productos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].nombre").value("Proteina Whey"))
-                .andExpect(jsonPath("$[0].categoria").value("Suplemento"))
-                .andExpect(jsonPath("$[0].precio").value(25000))
-                .andExpect(jsonPath("$[0].stock").value(10))
-                .andExpect(jsonPath("$[0].estadoStock").value("Disponible"));
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(content().string(containsString("Proteina Whey")))
+                .andExpect(content().string(containsString("Suplemento")))
+                .andExpect(content().string(containsString("Disponible")));
     }
 
     @Test
@@ -66,7 +65,12 @@ class ProductoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.nombre").value("Guantes Gym"))
-                .andExpect(jsonPath("$.estadoStock").value("Stock no disponible"));
+                .andExpect(jsonPath("$.categoria").value("Accesorio"))
+                .andExpect(jsonPath("$.precio").value(12000))
+                .andExpect(jsonPath("$.stock").value(0))
+                .andExpect(jsonPath("$.estadoStock").value("Stock no disponible"))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.todos-los-productos.href").exists());
     }
 
     @Test
@@ -96,7 +100,11 @@ class ProductoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.nombre").value("Polera Deportiva"))
+                .andExpect(jsonPath("$.categoria").value("Ropa deportiva"))
                 .andExpect(jsonPath("$.precio").value(18000))
-                .andExpect(jsonPath("$.estadoStock").value("Disponible"));
+                .andExpect(jsonPath("$.stock").value(20))
+                .andExpect(jsonPath("$.estadoStock").value("Disponible"))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.todos-los-productos.href").exists());
     }
 }
