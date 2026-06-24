@@ -7,29 +7,23 @@ spring:
   cloud:
     gateway:
       routes:
-        # 1. RUTA DE RUTINAS (Con RewritePath para limpiar la URL interna)
+        # 1. RUTA DE RUTINAS
         - id: rutina-service
           uri: http://rutina-service:8086
           predicates:
             - Path=/api/rutinas/**
-          filters:
-            - RewritePath=/api/rutinas/(?<segment>.*), /$\{segment}
 
         # 2. RUTA DE SOCIOS
         - id: socios-service
           uri: http://socios-service:8082
           predicates:
             - Path=/api/socios/**
-          filters:
-            - RewritePath=/api/socios/(?<segment>.*), /$\{segment}
 
         # 3. RUTA DE EMPLEADOS
         - id: empleados-service
           uri: http://empleados-service:8081
           predicates:
             - Path=/api/empleados/**
-          filters:
-            - RewritePath=/api/empleados/(?<segment>.*), /$\{segment}
 
         # 4. OTRAS RUTAS (Facturacion, Inventario, Comercial)
         - id: facturacion-service
